@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <textarea name="" id="ta" cols="30" rows="10"></textarea>
+    <button onclick="analyze()">识别</button>
+    <script>
+        function analyze() {
+            let lines = document.getElementById('ta').value.split('\n')
+            console.log(lines)
+            for (let i = 0, len = lines.length; i < len; i++) {
+                let matches=lines[i].match(/(\s*)(\S+)/)
+                if(matches){
+                    //非空行
+                    console.log(matches[1].length,matches[2])
+                }
+            }
+        }
+
+    </script>
+</body>
+
+</html>
