@@ -5,25 +5,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>text2mindmap</title>
 </head>
 
 <body>
-    <textarea name="" id="ta" cols="30" rows="10"></textarea>
-    <button onclick="analyze()">识别</button>
+    <div>
+        <textarea name="" id="ta" cols="30" rows="10"></textarea>
+    </div>
+    <button onclick="analyze()">生成</button>
     <script>
+        // 数据解析
         function analyze() {
-            let lines = document.getElementById('ta').value.split('\n')
-            console.log(lines)
-            for (let i = 0, len = lines.length; i < len; i++) {
-                let matches=lines[i].match(/(\s*)(\S+)/)
-                if(matches){
+            var mindmap = document.createElement('map'),
+                lines = document.getElementById('ta').value.split('\n'),
+                currentNode = mindmap,
+                currentIndent = -1,
+                minIndent = 4;
+            console.log(lines);
+            for (var i = 0, len = lines.length; i < len; i++) {
+                var matches = lines[i].match(/(\s*)(\S+)/);
+                if (matches) {
                     //非空行
-                    console.log(matches[1].length,matches[2])
+                    console.log(matches[1].length, matches[2]);
+                    var indent = matches[1].length;
+                    var value = matches[2];
+                    var node = document.createElement('node');
+                    node.setAttribute('text', value);
+                    if (indent > currentIndent) {
+                        currentNode.appendChild(node);
+                    } else if (indent === currentIndent) {
+                        currentNode.parentNode.append(node);
+                    } else {
+                        while (indent < currentIndent) {
+                            currentIndent -= minIndent;
+                            currentNode = currentNode.parentNode;
+                        }
+                        currentNode.parentNode.append(node);
+                    }
+                    currentNode = node;
+                    currentIndent = indent;
                 }
             }
+            console.log(mindmap)
+            genMindmapFile(mindmap)
         }
 
+        // 生成文件
+        function genMindmapFile(mindmap) {
+            var linkNode=document.createElement('a');
+            document.body.append(linkNode)
+            var blob = new Blob([mindmap.outerHTML], {
+                type: 'application/octet-stream'
+            });
+            linkNode.setAttribute('href',URL.createObjectURL(blob))
+            linkNode.append('下载')
+        }
     </script>
 </body>
 

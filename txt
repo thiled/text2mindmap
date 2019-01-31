@@ -4,6 +4,7 @@
     22
     
 12
+
 <node>
     <node text='11'>
         <node text='21'>
@@ -18,6 +19,9 @@
 </node>
 
 当前node，缩进值
-如果缩进值>当前值，当前node append
-如果缩进值等于当前值，当前node parent append
-如果缩进值<当前值，倍数parent append
+如果缩进值 > 当前值，当前node append
+如果缩进值 等于 当前值，当前node parent append
+如果缩进值 < 当前值，倍数parent append
+
+
+生成mm文件
