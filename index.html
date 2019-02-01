@@ -50,15 +50,18 @@
             genMindmapFile(mindmap)
         }
 
+
         // 生成文件
         function genMindmapFile(mindmap) {
-            var linkNode=document.createElement('a');
-            document.body.append(linkNode)
+            var fileName = 'file.mm';
             var blob = new Blob([mindmap.outerHTML], {
                 type: 'application/octet-stream'
             });
-            linkNode.setAttribute('href',URL.createObjectURL(blob))
-            linkNode.append('下载')
+            var link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = fileName;
+            link.click();
+            window.URL.revokeObjectURL(link.href);
         }
     </script>
 </body>
